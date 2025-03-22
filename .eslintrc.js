@@ -50,7 +50,7 @@ module.exports = {
 			ignoredNodes: ['TemplateLiteral'],
 			SwitchCase: 1,
 		}],
-		'no-tabs': 'off',
+		'no-tabs': 'on',
 		'no-mixed-spaces-and-tabs': ['error', 'smart-tabs'],
 		'newline-per-chained-call': 'off',
 		'@typescript-eslint/no-namespace': 'off',
