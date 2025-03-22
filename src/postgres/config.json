@@ -1,0 +1,25 @@
+{
+  "development": {
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "seederStorage": "sequelize"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "seederStorage": "sequelize",
+    "ssl": true,
+    "dialectOptions":{
+      "ssl":{
+        "require": true,
+        "rejectUnauthorized": false
+      }
+   }
+  },
+  "gitlab-tests": {
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres"
+  }
+}
+
+

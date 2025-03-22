@@ -1,0 +1,82 @@
+{
+  "name": "test05",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "nest build",
+    "db-migration-create": "npx sequelize-cli migration:generate --name",
+    "db-migrate": "npx sequelize-cli db:migrate",
+    "db-migrate-down": "npx sequelize-cli db:migrate:undo",
+    "db-seed-create": "npx sequelize-cli seed:generate --name",
+    "db-seed": "npx sequelize-cli db:seed:all",
+    "db-seed-down": "npx sequelize-cli db:seed:undo",
+    "start:api:dev": "nest start --entryFile src/entrypoints/api/main --watch",
+    "start:cron:dev": "nest start --entryFile src/entrypoints/cron-job/main --watch",
+    "start:consumer:dev": "nest start --entryFile /src/entrypoints/consumer/main --watch",
+    "start:api:production": "node dist/src/entrypoints/api/main",
+    "start:cron:production": "node dist/src/entrypoints/cron-job/main",
+    "start:consumer:production": "node dist/src/entrypoints/consumer/main",
+    "test": "npx jest",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
+  },
+  "dependencies": {
+    "@nestjs/common": "^9.0.0",
+    "@nestjs/core": "^9.0.0",
+    "@nestjs/microservices": "^11.0.12",
+    "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/schedule": "^5.0.1",
+    "@nestjs/sequelize": "^11.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "moment": "^2.30.1",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.2.0"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^9.0.0",
+    "@nestjs/schematics": "^9.0.0",
+    "@nestjs/testing": "^9.0.0",
+    "@types/express": "^4.17.13",
+    "@types/jest": "29.2.4",
+    "@types/node": "18.11.18",
+    "@types/supertest": "^2.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "eslint": "~8.15.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-prettier": "8.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-security": "^1.7.1",
+    "jest": "29.3.1",
+    "prettier": "^2.3.2",
+    "source-map-support": "^0.5.20",
+    "supertest": "^6.1.3",
+    "ts-jest": "29.0.3",
+    "ts-loader": "^9.2.3",
+    "ts-node": "^10.0.0",
+    "tsconfig-paths": "4.1.1",
+    "typescript": "^4.7.4"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
+}
