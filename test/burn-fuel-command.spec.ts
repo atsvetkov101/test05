@@ -10,7 +10,7 @@ import { BurnFuelCommand } from '../src/core/burn-fuel-command';
 describe('BurnFuelCommand tests', function() {
   describe('BurnFuelCommand test set', function() {
     // eslint-disable-next-line max-len
-    it('point 5.BurnFuelCommand: сжигаем топливо, топливо есть', function() {
+    it('point 5.BurnFuelCommand: сжигаем топливо, топливо есть', async function() {
       const obj:GameObject = new GameObject({ 
         position: null, 
         velocity: null, 
@@ -19,12 +19,12 @@ describe('BurnFuelCommand tests', function() {
       const burnFuelCommand = new BurnFuelCommand();
       burnFuelCommand.setFuelToBurn(6);
       burnFuelCommand.setTarget(obj);
-      burnFuelCommand.execute();
+      await burnFuelCommand.execute();
 
       expect(obj.getFuel()).equals(4);
     });
 
-    it('point 5.BurnFuelCommand: сжигаем весь остаток топлива', function() {
+    it('point 5.BurnFuelCommand: сжигаем весь остаток топлива', async function() {
       const obj:GameObject = new GameObject({ 
         position: new Point(12, 5), 
         velocity: new Vector(-7, 3), 
@@ -33,7 +33,7 @@ describe('BurnFuelCommand tests', function() {
       const burnFuelCommand = new BurnFuelCommand();
       burnFuelCommand.setFuelToBurn(6);
       burnFuelCommand.setTarget(obj);
-      burnFuelCommand.execute();
+      await burnFuelCommand.execute();
 
       expect(obj.getFuel()).equals(0);
     });

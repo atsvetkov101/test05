@@ -9,7 +9,7 @@ import { CommandException } from '../src/core/command-exception';
 describe('CheckFuelCommand tests', function() {
   describe('CheckFuelCommand test set', function() {
     // eslint-disable-next-line max-len
-    it('point 3. CheckFuelCommand: у объекта есть топливо для движения', function() {
+    it('point 3. CheckFuelCommand: у объекта есть топливо для движения', async function() {
       const obj:GameObject = new GameObject({ 
         position: null, 
         velocity: null, 
@@ -17,11 +17,17 @@ describe('CheckFuelCommand tests', function() {
       });
       const checkFuelCommand = new CheckFuelCommand();
       checkFuelCommand.setTarget(obj);
+      let err;
+      try{
+        await checkFuelCommand.execute();
+      } catch(e) {
+        err = e;
+      }
 
-      expect(function () { checkFuelCommand.execute(); }).to.not.throw();
+      expect(err).equals(undefined);
     });
 
-    it('point 3.CheckFuelCommand: у объекта нет топлива для движения', function() {
+    it('point 3.CheckFuelCommand: у объекта нет топлива для движения', async function() {
       const obj:GameObject = new GameObject({ 
         position: new Point(12, 5), 
         velocity: new Vector(-7, 3), 
@@ -29,7 +35,13 @@ describe('CheckFuelCommand tests', function() {
       });
       const checkFuelCommand = new CheckFuelCommand();
       checkFuelCommand.setTarget(obj);
-      expect(function() { checkFuelCommand.execute(); } ).to.throw(CommandException);
+      let err;
+      try{
+        await checkFuelCommand.execute();
+      } catch(e) {
+        err = e;
+      }
+      expect(err instanceof CommandException).equals(true);
     });
 
   });

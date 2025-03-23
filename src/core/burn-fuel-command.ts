@@ -10,12 +10,13 @@ export class BurnFuelCommand extends BaseCommand implements ICommand {
     super();
   }
 
-  execute(): void {
+  execute(): Promise<void> {
     if(this.target) {
       this.logTarget();
       this.target.burn(this.fuelToBurn);
       this.logTarget();
     }
+    return Promise.resolve();
   }
   getType(): string {
     return 'BurnFuelCommand';

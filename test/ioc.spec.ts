@@ -13,13 +13,13 @@ import { ClearCurrentScopeCommand } from '../src/core/scopes/clear-current-scope
 
 describe('Тесты для IoC', function() {
   describe('Набор тестов для IoC', function() {
-    before(() => {
-      new InitCommand().execute();
+    before(async () => {
+      await (new InitCommand()).execute();
     });
-    after(() => {
-      new ClearCurrentScopeCommand().execute();
+    after(async () => {
+      await (new ClearCurrentScopeCommand()).execute();
     });
-    it('Метод Resolve без аргументов', function() {
+    it('Метод Resolve без аргументов', async function() {
 
       const straightMoveCommand = IoC.Resolve<StraightMoveCommand>('StraightMoveCommand');
       expect(straightMoveCommand, 'command StraightMoveCommand is undefined').not.to.be.undefined;
@@ -31,14 +31,14 @@ describe('Тесты для IoC', function() {
 
       straightMoveCommand.setTarget(object);
 
-      straightMoveCommand.execute();
+      await straightMoveCommand.execute();
 
       expect(object.getLocation().x).equals(3);
       expect(object.getLocation().y).equals(3);
 
       expect(main()).to.equal('Выполнение завершено');
     });
-    it('Метод Resolve с одним аргументом', function() {
+    it('Метод Resolve с одним аргументом', async function() {
 
       const сommand = IoC.Resolve<TeleportationCommand>('TeleportationCommand', new Point(10,10));
       expect(сommand, 'command TeleportationCommand is undefined').not.to.be.undefined;
@@ -50,16 +50,16 @@ describe('Тесты для IoC', function() {
 
       сommand.setTarget(object);
 
-      сommand.execute();
+      await сommand.execute();
 
       expect(object.getLocation().x).equals(10);
       expect(object.getLocation().y).equals(10);
 
       expect(main()).to.equal('Выполнение завершено');
     });
-    it('Метод Resolve с несколькими аргументами', function() {
+    it('Метод Resolve с несколькими аргументами', async function() {
 
-      IoC.Resolve<ICommand>('IoC.Register', 'ManyArgumentsCommand', (...args) => {
+      await IoC.Resolve<ICommand>('IoC.Register', 'ManyArgumentsCommand', (...args) => {
         return new ManyArgumentsCommand(args);
       }).execute();
 

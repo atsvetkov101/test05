@@ -9,13 +9,14 @@ export class MacroCommand extends BaseCommand {
   setCommands(cmds: ICommand[]){
     this.commands = cmds;
   }
-  execute(){
+  async execute(): Promise<void>{
     if(!this.commands){
-      return;
+      return Promise.resolve();;
     }
     while(this.commands.length > 0){
       const command = this.commands.shift();
-      command.execute();
+      await command.execute();
     }
+    return Promise.resolve();
   }
 }

@@ -19,12 +19,13 @@ export class TeleportationCommand extends BaseCommand implements ICommand, ILoca
     this.position = newPosition;
   }
 
-  execute(): void {
+  execute(): Promise<void> {
     if(this.target) {
       this.logTarget();
       this.target.setLocation(this.position);
       this.logTarget();
     }
+    return Promise.resolve();
   }
   getType(): string {
     return 'TeleportationCommand';

@@ -9,7 +9,7 @@ export class InitCommand implements ICommand {
   setTarget(object: any) {
     throw new Error('Method not implemented.');
   }
-  execute(): void {
+  execute(): Promise<void> {
     
     const records = new Map<string, Fn>();
    
@@ -37,6 +37,7 @@ export class InitCommand implements ICommand {
     });
 
     IoC.init(dependencies);
+    return Promise.resolve();
   }
   getType(): string {
     return 'InitCommand';

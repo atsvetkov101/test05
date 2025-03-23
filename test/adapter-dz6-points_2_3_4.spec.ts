@@ -29,11 +29,11 @@ class Implementer implements IMovable {
 
 describe('Тесты для адаптера', function() {
   describe('Набор тестов для адаптера', function() {
-    before(() => {
-      new InitCommand().execute();
+    before(async () => {
+      await (new InitCommand()).execute();
     });
-    after(() => {
-      new ClearCurrentScopeCommand().execute();
+    after(async () => {
+      await (new ClearCurrentScopeCommand()).execute();
     });
     it.skip('DZ6 points 2,3,4 IoC регистрируем и используеи адаптер. Создаем экземпляр динамического класса.', function() {
 

@@ -12,10 +12,11 @@ export class RegisterDependencyCommand implements ICommand{
   setTarget(object: any) {
     throw new Error('Method not implemented.');
   }
-  execute(): void {
+  execute(): Promise<void> {
     // eslint-disable-next-line max-len
     const dependencies:scopeIocDependencies = IoC.getCurrentScopeDependencies();
     dependencies.set(this.dependency, this.dependencyResolverStrateqy);
+    return Promise.resolve();
   }
   getType(): string {
     return 'RegisterDependencyCommand';
