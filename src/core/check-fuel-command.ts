@@ -7,7 +7,7 @@ export class CheckFuelCommand extends BaseCommand implements ICommand {
 
   target: IUseFuel;
   
-  execute(): void {
+  execute(): Promise<void> {
     if(this.target) {
       this.logTarget();
       const ableToMove = this.target.ableToMove();
@@ -15,6 +15,7 @@ export class CheckFuelCommand extends BaseCommand implements ICommand {
         throw new CommandException('CheckFuelCommand generated error');
       }
     }
+    return Promise.resolve();
   }
   getType(): string {
     return 'CheckFuelCommand';

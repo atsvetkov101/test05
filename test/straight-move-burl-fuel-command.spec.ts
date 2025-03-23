@@ -11,7 +11,7 @@ import { StraightMoveBurlFuelMacroCommand } from '../src/core/straight-move-burl
 describe('StraightMoveBurlFuelMacroCommand tests', function() {
   describe('StraightMoveBurlFuelMacroCommand test set', function() {
     // eslint-disable-next-line max-len
-    it('point 7.StraightMoveBurlFuelMacroCommand: перемещаемся и сжигаем топливо, топливо есть', function() {
+    it('point 7.StraightMoveBurlFuelMacroCommand: перемещаемся и сжигаем топливо, топливо есть', async function() {
       const obj:GameObject = new GameObject({ 
         position: new Point(12, 5), 
         velocity: new Vector(-7, 3), 
@@ -21,11 +21,18 @@ describe('StraightMoveBurlFuelMacroCommand tests', function() {
       const macroCommand = new StraightMoveBurlFuelMacroCommand();
       macroCommand.setFuelToBurn(4);
       macroCommand.setTarget(obj);
-      expect(function () { macroCommand.execute(); }).to.not.throw();
+      let err;
+      try{
+        await macroCommand.execute();
+      } catch(e) {
+        err = e;
+      }
+
+      expect(err).equals(undefined);
       expect(obj.getFuel()).equals(1);
     });
 
-    it('point 7.StraightMoveBurlFuelMacroCommand: пытаемся перемещаться и сжигать топливо, но топлива нет', function() {
+    it('point 7.StraightMoveBurlFuelMacroCommand: пытаемся перемещаться и сжигать топливо, но топлива нет', async function() {
       const obj:GameObject = new GameObject({ 
         position: new Point(12, 5), 
         velocity: new Vector(-7, 3), 
@@ -35,12 +42,20 @@ describe('StraightMoveBurlFuelMacroCommand tests', function() {
       const macroCommand = new StraightMoveBurlFuelMacroCommand();
       macroCommand.setFuelToBurn(4);
       macroCommand.setTarget(obj);
-      expect(function() { macroCommand.execute(); } ).to.throw(CommandException);
+      let err;
+      try{
+        await macroCommand.execute();
+      } catch(e) {
+        err = e;
+      }
+
+      expect(err instanceof CommandException).equals(true);
+      // expect(function() { macroCommand.execute(); } ).to.throw(CommandException);
       expect(obj.getFuel()).equals(0);
     });
 
     // eslint-disable-next-line max-len
-    it('point 7.StraightMoveBurlFuelMacroCommand: проверяем, что объект переместился, скорость не изменилась и топливо было израсходовано', function() {
+    it('point 7.StraightMoveBurlFuelMacroCommand: проверяем, что объект переместился, скорость не изменилась и топливо было израсходовано', async function() {
       const obj:GameObject = new GameObject({ 
         position: new Point(12, 5), 
         velocity: new Vector(-7, 3), 
@@ -50,7 +65,14 @@ describe('StraightMoveBurlFuelMacroCommand tests', function() {
       const macroCommand = new StraightMoveBurlFuelMacroCommand();
       macroCommand.setFuelToBurn(4);
       macroCommand.setTarget(obj);
-      expect(function() { macroCommand.execute(); } ).to.not.throw();
+      let err;
+      try{
+        await macroCommand.execute();
+      } catch(e) {
+        err = e;
+      }
+
+      expect(err).equals(undefined);
       
       const location = obj.getLocation();
       expect(location.x).equals(5);

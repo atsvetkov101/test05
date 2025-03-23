@@ -17,12 +17,13 @@ export class StraightMoveCommand extends BaseCommand implements ICommand {
     this.movement = new StraightMovement();
   }
 
-  execute(): void {
+  execute(): Promise<void> {
     if(this.target) {
       this.logTarget();
       this.movement.move(this.target);
       this.logTarget();
     }
+    return Promise.resolve();
   }
   getType(): string {
     return 'StraightMoveCommand';

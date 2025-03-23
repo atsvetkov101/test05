@@ -8,8 +8,9 @@ export class ManyArgumentsCommand implements ICommand{
   setTarget(object: any) {
     throw new Error('Method not implemented.');
   }
-  execute(): void {
+  execute(): Promise<void> {
     // do nothing;
+    return Promise.resolve();
   }
   getType(): string {
     return 'ManyArgumentsCommand';

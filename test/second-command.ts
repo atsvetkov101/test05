@@ -8,7 +8,7 @@ export class SecondCommand implements ICommand {
   setTarget(object: any) {
     throw new Error('Method not implemented.');
   }
-  execute(): void {
+  execute(): Promise<void> {
     throw new Error('Method not implemented.');
   }
   getType(): string {

@@ -1,6 +1,6 @@
 export interface ICommand {
 
-  execute(): void;
+  execute(): Promise<void>;
   getType(): string;
-  setTarget( arg0: object ): void;
+  setTarget?( arg0: object ): void;
 }

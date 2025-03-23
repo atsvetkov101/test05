@@ -12,12 +12,13 @@ export class RotateCommand extends BaseCommand implements ICommand {
     this.rotation = new Rotation();
   }
 
-  execute(): void {
+  execute(): Promise<void> {
     if(this.target) {
       this.logTarget();
       this.rotation.rotate(this.target);
       this.logTarget();
     }
+    return Promise.resolve();
   }
 
   getType(): string {

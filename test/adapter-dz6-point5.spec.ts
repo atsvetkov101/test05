@@ -34,16 +34,16 @@ class Implementer implements IMovable {
 
 describe('Тесты для адаптера', function() {
   describe('Набор тестов для адаптера', function() {
-    before(() => {
-      new InitCommand().execute();
+    before(async () => {
+      await (new InitCommand()).execute();
     });
-    after(() => {
-      new ClearCurrentScopeCommand().execute();
+    after(async () => {
+      await (new ClearCurrentScopeCommand()).execute();
     });
     // eslint-disable-next-line max-len
-    it.skip('DZ6 point 5 IoC регистрируем и используеи адаптер. Создаем экземпляр динамического класса с методом finish.', function() {
+    it.skip('DZ6 point 5 IoC регистрируем и используеи адаптер. Создаем экземпляр динамического класса с методом finish.', async function() {
 
-      IoC.Resolve('IoC.Register', 'Adapter', (...args) => {
+      await IoC.Resolve('IoC.Register', 'Adapter', (...args) => {
         return AdapterGenerator.generate(args);
       }).execute();
 

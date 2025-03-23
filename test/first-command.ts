@@ -9,7 +9,7 @@ export class FirstCommand implements ICommand {
     throw new Error('Method not implemented.');
   }
 
-  execute(): void {
+  execute(): Promise<void> {
     throw new Error('Method not implemented.');
   }
   getType(): string {

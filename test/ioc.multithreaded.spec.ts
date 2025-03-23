@@ -7,8 +7,8 @@ import { ClearCurrentScopeCommand } from '../src/core/scopes/clear-current-scope
 
 const timeout = 50;
 const setAndCheckScopeFunc = async (scope) => {
-  return new Promise((resolve, reject) => {
-    IoC.Resolve('IoC.Scope.Current.Set', scope).execute();
+  return new Promise(async (resolve, reject) => {
+    await IoC.Resolve('IoC.Scope.Current.Set', scope).execute();
     let counter = 0;
     const funcId = Math.round(Math.random() * 100000);
     const myTimer = setInterval(() => {
@@ -25,8 +25,8 @@ const setAndCheckScopeFunc = async (scope) => {
 };
 
 const resolveSomeCommandFunc = async (scope, expectedType) => {
-  return new Promise((resolve, reject) => {
-    IoC.Resolve('IoC.Scope.Current.Set', scope).execute();
+  return new Promise(async (resolve, reject) => {
+    await IoC.Resolve('IoC.Scope.Current.Set', scope).execute();
     let counter = 0;
     const funcId = Math.round(Math.random() * 100000);
     let someCommand;
@@ -50,14 +50,14 @@ const resolveSomeCommandFunc = async (scope, expectedType) => {
 };
 
 const setScopeResolveSomeCommandFunc = async (scope, expectedType) => {
-  return new Promise((resolve, reject) => {
-    IoC.Resolve('IoC.Scope.Current.Set', scope).execute();
+  return new Promise(async (resolve, reject) => {
+    await IoC.Resolve('IoC.Scope.Current.Set', scope).execute();
     let counter = 0;
     const funcId = Math.round(Math.random() * 100000);
     let someCommand;
     const types = [];
-    const myTimer = setInterval(() => {
-      IoC.Resolve('IoC.Scope.Current.Set', scope).execute();
+    const myTimer = setInterval(async () => {
+      await IoC.Resolve('IoC.Scope.Current.Set', scope).execute();
       const currentScope = IoC.Resolve('IoC.Scope.Current');
       someCommand = IoC.Resolve('SomeCommand');
       const type = someCommand.getType();
@@ -78,11 +78,11 @@ const setScopeResolveSomeCommandFunc = async (scope, expectedType) => {
 
 describe('Тесты для многопоточности для IoC', function() {
   describe('Набор тестов для многопоточности для IoC', function() {
-    before(() => {
-      new InitCommand().execute();
+    before(async () => {
+      await (new InitCommand()).execute();
     });
-    after(() => {
-      new ClearCurrentScopeCommand().execute();
+    after(async () => {
+      await (new ClearCurrentScopeCommand()).execute();
     });
     it('Одна функция проверяем скоуп. default скоуп', async function() {
 
@@ -119,13 +119,13 @@ describe('Тесты для многопоточности для IoC', function
 
       const scope1 = 'scope101';
       const scope2 = 'scope102';
-      IoC.Resolve('IoC.Scope.Current.Set', scope1).execute();
-      IoC.Resolve('IoC.Register', 'SomeCommand',(...args) => {
+      await IoC.Resolve('IoC.Scope.Current.Set', scope1).execute();
+      await IoC.Resolve('IoC.Register', 'SomeCommand',(...args) => {
         return new FirstCommand(args);
       }).execute();
 
-      IoC.Resolve('IoC.Scope.Current.Set', scope2).execute();
-      IoC.Resolve('IoC.Register', 'SomeCommand',(...args) => {
+      await IoC.Resolve('IoC.Scope.Current.Set', scope2).execute();
+      await IoC.Resolve('IoC.Register', 'SomeCommand',(...args) => {
         return new SecondCommand(args);
       }).execute();
 
@@ -147,13 +147,13 @@ describe('Тесты для многопоточности для IoC', function
 
       const scope1 = 'scope103';
       const scope2 = 'scope104';
-      IoC.Resolve('IoC.Scope.Current.Set', scope1).execute();
-      IoC.Resolve('IoC.Register', 'SomeCommand',(...args) => {
+      await IoC.Resolve('IoC.Scope.Current.Set', scope1).execute();
+      await IoC.Resolve('IoC.Register', 'SomeCommand',(...args) => {
         return new FirstCommand(args);
       }).execute();
 
-      IoC.Resolve('IoC.Scope.Current.Set', scope2).execute();
-      IoC.Resolve('IoC.Register', 'SomeCommand',(...args) => {
+      await IoC.Resolve('IoC.Scope.Current.Set', scope2).execute();
+      await IoC.Resolve('IoC.Register', 'SomeCommand',(...args) => {
         return new SecondCommand(args);
       }).execute();
 

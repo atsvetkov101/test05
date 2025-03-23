@@ -23,11 +23,11 @@ describe('Тесты для init-command', function() {
     });
   });
   describe('Набор тестов для init-command #2', function() {
-    before(() => {
-      new InitCommand().execute();
+    before(async () => {
+      await (new InitCommand()).execute();
     });
-    after(() => {
-      new ClearCurrentScopeCommand().execute();
+    after(async () => {
+      await (new ClearCurrentScopeCommand()).execute();
     });
     it('IoC с инициализацией', function() {
       let straightMoveCommand;
@@ -45,14 +45,14 @@ describe('Тесты для init-command', function() {
       const scope = IoC.Resolve<string>('IoC.Scope.Current');
       expect(scope, 'IoC скоуп по-умолчанию \'default\'').equals('default');
     });
-    it('IoC устанавливаем скоуп', function() {
-      IoC.Resolve('IoC.Scope.Current.Set', 'myscope').execute();
+    it('IoC устанавливаем скоуп', async function() {
+      await IoC.Resolve('IoC.Scope.Current.Set', 'myscope').execute();
       const currentScope = IoC.Resolve<string>('IoC.Scope.Current');
       expect(currentScope).equals('myscope');
     });
-    it('IoC устанавливаем скоуп. Регистрируем зависимость в скоупе. Проверяем, что разрешается.', function() {
-      IoC.Resolve('IoC.Scope.Current.Set', 'myscope1').execute();
-      IoC.Resolve<ICommand>('IoC.Register', 'ManyArgumentsCommand', (...args) => {
+    it('IoC устанавливаем скоуп. Регистрируем зависимость в скоупе. Проверяем, что разрешается.', async function() {
+      await IoC.Resolve('IoC.Scope.Current.Set', 'myscope1').execute();
+      await IoC.Resolve<ICommand>('IoC.Register', 'ManyArgumentsCommand', (...args) => {
         return new ManyArgumentsCommand(args);
       }).execute();
 
@@ -64,12 +64,12 @@ describe('Тесты для init-command', function() {
       expect(command, 'command ManyArgumentsCommand is null').not.to.be.null;
     });
     // eslint-disable-next-line max-len
-    it('IoC устанавливаем скоуп. Регистрируем зависимость в скоупе. Проверяем, что не разрешается в другом скоупе.', function() {
-      IoC.Resolve('IoC.Scope.Current.Set', 'scope1').execute();
-      IoC.Resolve<ICommand>('IoC.Register', 'ManyArgumentsCommand', (...args) => {
+    it('IoC устанавливаем скоуп. Регистрируем зависимость в скоупе. Проверяем, что не разрешается в другом скоупе.', async function() {
+      await IoC.Resolve('IoC.Scope.Current.Set', 'scope1').execute();
+      await IoC.Resolve<ICommand>('IoC.Register', 'ManyArgumentsCommand', (...args) => {
         return new ManyArgumentsCommand(args);
       }).execute();
-      IoC.Resolve('IoC.Scope.Current.Set', 'scope2').execute();
+      await IoC.Resolve('IoC.Scope.Current.Set', 'scope2').execute();
       const command = IoC.Resolve<ManyArgumentsCommand>('ManyArgumentsCommand', 
         new Point(10,10),
         new Vector(5,5)
