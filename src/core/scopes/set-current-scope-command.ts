@@ -10,8 +10,9 @@ export class SetCurrentScopeCommand implements ICommand{
   setTarget(object: any) {
     throw new Error('Method not implemented.');
   }
-  execute(): void {
+  execute(): Promise<void> {
     IoC.setCurrenScope(this.scope);
+    return Promise.resolve();
   }
   getType(): string {
     return 'SetCurrentScopeCommand';
