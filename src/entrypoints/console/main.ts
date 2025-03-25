@@ -19,11 +19,14 @@ async function bootstrap() {
 		app.useLogger(logger);
 
 		logger.log(`Service version: ${version}`);
-
 		const consoleService = await app.resolve(ConsoleService);
+    await consoleService.startProcessing();
+    /*
 		const greeting = consoleService.getHello();
     logger.log(greeting);
-
+*/
+    const port = 8080;
+    await app.listen(port);
 	} catch (error) {
 		if (error instanceof Error) {
 			logger.error(`Bootstrap error: ${error.message}`);

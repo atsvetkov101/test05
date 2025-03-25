@@ -14,8 +14,10 @@ export class CheckFuelCommand extends BaseCommand implements ICommand {
       if (!ableToMove) {
         throw new CommandException('CheckFuelCommand generated error');
       }
+      return Promise.resolve();
+    }else{
+      return Promise.reject();
     }
-    return Promise.resolve();
   }
   getType(): string {
     return 'CheckFuelCommand';
