@@ -101,7 +101,7 @@ describe('ProcessingQueueCommand tests', function() {
       commands1.push(straightMoveCommand);
       commands1.push(burnFuelCommand);
 
-      const gameProcessing1 = new ProcessingQueueCommand();
+      const gameProcessing1 = new ProcessingQueueCommand({gameName: 'first'});
       gameProcessing1.setCommands(commands1);
 
       const commands2 = [];
@@ -110,7 +110,7 @@ describe('ProcessingQueueCommand tests', function() {
       commands2.push(firstCommand);
       commands2.push(secondCommand);
 
-      const gameProcessing2 = new ProcessingQueueCommand();
+      const gameProcessing2 = new ProcessingQueueCommand({gameName: 'second'});
       gameProcessing2.setCommands(commands2);
 
       await Promise.all([gameProcessing1.execute(), gameProcessing2.execute()]);
