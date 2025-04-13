@@ -44,10 +44,10 @@ export class ProcessingQueueCommand extends MacroCommand{
       return Promise.resolve();
     }
     while(commands.length > 0){
-        const e1 = elapsedMilliseconds();
+        const elapsed = elapsedMilliseconds();
         const command = commands.shift();
         try{
-          console.log(`executing command ${command.getType()}`);
+          console.log(`executing command ${command.getType()}  commands.length:${commands.length} `);
           await command.execute();
         } catch(e){
           console.log(`Error ${e}`);

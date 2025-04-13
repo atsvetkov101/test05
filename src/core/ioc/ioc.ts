@@ -16,13 +16,36 @@ export class IoC{
   }
 
   public static setCurrenScope( scope: string ) {
+    let logins = [];
+    if(IoC.storage.getStore() && IoC.storage.getStore().hasOwnProperty('userLogins')){
+      logins = IoC.storage.getStore().userLogins;
+    }
     IoC.storage.enterWith({
-      currentScope: scope
+      currentScope: scope,
+      userLogins: logins
+    });
+  }
+
+  public static setUserLogins( logins: string[] ) {
+    const scope = IoC.storage.getStore().currentScope;
+    IoC.storage.enterWith({
+      currentScope: scope,
+      userLogins: logins
     });
   }
 
   public static getCurrentScope() {
-    return IoC.storage.getStore().currentScope;
+    const currentScope = IoC.storage.getStore().currentScope;
+    console.log(`currentScope:${currentScope}`);
+    return currentScope;
+  }
+
+  public static getUserLogins() {
+    let logins = [];
+    if(IoC.storage.getStore() && IoC.storage.getStore().hasOwnProperty('userLogins')){
+      logins = IoC.storage.getStore().userLogins;
+    }
+    return logins;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function

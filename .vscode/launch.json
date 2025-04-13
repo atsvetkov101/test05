@@ -4,6 +4,14 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "start:api:dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start:api:dev"],
+      "console":"integratedTerminal",
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "run-tests",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "test"],

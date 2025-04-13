@@ -51,9 +51,9 @@ describe('ProcessingQueueCommand tests', function() {
       gameProcessing.setCommands(commands);
 
       await gameProcessing.execute();
-      expect(messages[0].endsWith('CheckFuelCommand')).equals(true);
-      expect(messages[1].endsWith('StraightMoveCommand')).equals(true);
-      expect(messages[2].endsWith('BurnFuelCommand')).equals(true);
+      expect(messages[0].includes('CheckFuelCommand')).equals(true);
+      expect(messages[1].includes('StraightMoveCommand')).equals(true);
+      expect(messages[2].includes('BurnFuelCommand')).equals(true);
     });
     it('dz #7 point 5.Выброс исключения из команды не должен прерывать выполнение потока', async function() {
       const commands = [];
@@ -71,10 +71,10 @@ describe('ProcessingQueueCommand tests', function() {
       gameProcessing.setCommands(commands);
 
       await gameProcessing.execute();
-      expect(messages[0].endsWith('CheckFuelCommand')).equals(true);
+      expect(messages[0].includes('CheckFuelCommand')).equals(true);
       expect(messages[1].includes('Error')).equals(true);
-      expect(messages[2].endsWith('StraightMoveCommand')).equals(true);
-      expect(messages[3].endsWith('BurnFuelCommand')).equals(true);
+      expect(messages[2].includes('StraightMoveCommand')).equals(true);
+      expect(messages[3].includes('BurnFuelCommand')).equals(true);
     });
   });
   describe('dz #7 point 5. tests', function() {
@@ -141,6 +141,7 @@ describe('ProcessingQueueCommand tests', function() {
       const straightMoveCommand = new StraightMoveCommand();
       const burnFuelCommand = new BurnFuelCommand();
       burnFuelCommand.setFuelToBurn(3);
+      
       const keepProcessingCommand = new KeepProcessingCommand({ 
         commands: commands,
         delayMilliseconds: 1000,
@@ -162,7 +163,7 @@ describe('ProcessingQueueCommand tests', function() {
       expect(messages.find((item) => item.includes('executing command StraightMoveCommand')) !== undefined).equals(true);
       expect(messages.find((item) => item.includes('executing command BurnFuelCommand')) !== undefined).equals(true);
       expect(messages.find((item) => item.includes('executing command KeepProcessingCommand')) !== undefined).equals(true);
-      expect(messages[messages.length-1].endsWith('HardStopCommand')).equals(true);
+      expect(messages[messages.length-1].includes('HardStopCommand')).equals(true);
     });
   });
   describe('dz #7 point 7. tests', function() {
@@ -205,7 +206,7 @@ describe('ProcessingQueueCommand tests', function() {
       expect(messages.find((item) => item.includes('executing command BurnFuelCommand')) !== undefined).equals(true);
       expect(messages.find((item) => item.includes('executing command KeepProcessingCommand')) !== undefined).equals(true);
       expect(messages.find((item) => item.includes('executing command FirstCommand')) !== undefined).equals(true);
-      expect(messages[messages.length-1].endsWith('SoftStopCommand')).equals(true);
+      expect(messages[messages.length-1].includes('SoftStopCommand')).equals(true);
     });
   });
 });
