@@ -26,7 +26,7 @@
     "start:consumer:production": "node dist/src/entrypoints/consumer/main",
     "start:console:production": "nest start --entryFile src/entrypoints/console/main",
     "pretest": "npm run build",
-    "test": "mocha dist/test/**/*.js --timeout 999999",
+    "test": "mocha dist/test/**/*.js --timeout 60000 --exit",
     "test-jest": "npx jest --watch",
     "test-jest-api-start-game": "npx jest -- jest-test/api/api-start-game.spec.ts --watch --timeout 999999",
     "test:backend:unit": "mocha --forbid-only  --timeout 20000 --require ts-node/register --recursive test/ --trace-warnings --exit",
