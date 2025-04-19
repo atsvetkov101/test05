@@ -8,15 +8,20 @@ import { FindObjectCommand } from '../../../core/find-object-command';
 import { InterpretCommand } from '../../../core/interpret-command';
 import { KeepProcessingCommand } from '../../../core/keep-processing-command';
 import { ProcessingQueueCommand } from '../../../core/threads/processing-queue-command';
+import { Utils } from '../../../core/util/utils';
+import { HardStopCommand } from '../../../core/hard-stop-command';
 
 @Injectable()
 export class GameProcessingUsecases {
 	constructor(
   ) {}
 
-	async startGame(gameId: string) {
+	async startGame(gameId: string, logins: string[] = []) {
     await (new InitCommand()).execute();
     IoC.setCurrenScope(gameId);
+    if(logins.length > 0) {
+      IoC.setUserLogins(logins);
+    }
     await IoC.Resolve<ICommand>('IoC.Register', 'FlexibleCommand', (...args) => {
       return new FlexibleCommand(args);
     }).execute();
@@ -38,13 +43,7 @@ export class GameProcessingUsecases {
     objects.set('myobject', { id:'myobject', name:'myname' });
 
     const gameProcessing = await IoC.Resolve<ICommand>('ProcessingQueueCommand', { gameName: gameId, objects });
-    const commands = gameProcessing.getCommands();
-    const keepProcessingCommand = new KeepProcessingCommand({ 
-      commands: commands,
-      delayMilliseconds: 1000,
-    });
-    gameProcessing.push(keepProcessingCommand);      
-    gameProcessing.execute();
+    return gameProcessing.execute();
   }
 
   async startGames(gameIds: string[]){
@@ -52,9 +51,13 @@ export class GameProcessingUsecases {
     return Promise.all(calls);
   }
  
-  async startGameByUser(gameId: string,
-    userLogins: string[]
-  ) {
-    return Promise.resolve(null);
+  private generateGameId(): string {
+    return Utils.generateRandomString();
+  }
+
+  async startNewGameByUser(userLogins: string[]): Promise<string> {
+    const gameId = this.generateGameId();
+    await this.startGame(gameId, userLogins);
+    return Promise.resolve(gameId);
   }
 }

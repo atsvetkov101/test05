@@ -35,6 +35,9 @@ export class IoC{
   }
 
   public static getCurrentScope() {
+    if(!IoC.storage){
+      return IoC.getDefaultScopeName();
+    }
     const currentScope = IoC.storage.getStore().currentScope;
     console.log(`currentScope:${currentScope}`);
     return currentScope;

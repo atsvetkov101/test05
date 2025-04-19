@@ -5,15 +5,23 @@ import {
 
 export namespace Game {
   export class StartGameRequest {
-    @IsString()
-      gameId!: string;
-
-			userLogins!: string[];
+  	userLogins!: string[];
 
   }
 
   export class StartGameResponse {
     success!: boolean;
+
+    gameId!: string;
 	}
 
+  export class AuthorizeInGameRequest {
+    gameId!: string;
+  }
+
+  export class AuthorizeInGameResponse {
+    success!: boolean;
+
+    token!: string;
+	}
 }

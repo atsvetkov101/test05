@@ -3,12 +3,14 @@ import { InterpretCommand } from '../../../core/interpret-command';
 import { IoC } from '../../../core/ioc/ioc';
 import { Authentication } from '../../../contracts/authentication';
 import { AuthHelper } from '../../../core/auth/auth-helper';
+import httpContext from 'express-http-context';
 
 @Injectable()
-export class GameService {
+export class GameUsecases {
 
-  async getGameIdByLogin(login: string): Promise<string> {
-    const gameId = 'my_test_game';
+  async authorizeInGame(gameId: string): Promise<string> {
+
+    const user = httpContext.get('user');
     // TODO: implement game resolution by login
     // ...
     return Promise.resolve(gameId);

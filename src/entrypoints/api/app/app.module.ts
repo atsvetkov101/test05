@@ -8,7 +8,7 @@ import { AuthService } from '../auth/auth.service';
 import { AuthenticationMiddleware } from '../auth/auth.middleware';
 import { JwtModule } from '@nestjs/jwt';
 import { AppUsecases } from './app.usecases';
-import { GameService } from '../game/game.service';
+import { GameUsecases } from '../game/game.usecases';
 import { GameProcessingUsecases } from '../game/game-processing.usecases';
 const EXCLUDED_ROUTES = [
 	'/api/v1/login', '/api/v1/hello-world'
@@ -24,7 +24,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'default;.super!@321SECRET$$';
 		}),
   ],
 	controllers: [AppController],
-	providers: [AppService, AuthService, AppUsecases, GameService, GameProcessingUsecases],
+	providers: [AppService, AuthService, AppUsecases, GameUsecases, GameProcessingUsecases],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {

@@ -5,13 +5,7 @@ import {
 
 export namespace Authorization {
   export class AuthorizeInGameRequest {
-    @IsString()
-			login!: string;
-
-		@IsString()
-			password!: string;
-
-    @IsString()
+     @IsString()
       idGame!: string;
   }
 
