@@ -8,9 +8,9 @@ export class AppService {
 		return 'Hello World!';
 	}
 
-  async interpretCommand(data): Promise<null>  {
+  async interpretCommand(data): Promise<any>  {
 
-    IoC.setCurrenScope('default');
+    IoC.setCurrenScope(data.idGame);
     
     const interpretCommand = new InterpretCommand({
       idGame: data.idGame,
@@ -18,9 +18,15 @@ export class AppService {
       idCommand: data.idCommand,
       commandArgs: data.args,
     });
-
-    await interpretCommand.execute();
-
-    return null;
+    let success = false;
+    try {
+      await interpretCommand.execute();
+      success = true;
+    }catch(e: any){
+      console.log(`interpretCommand Error:${e.message}`);
+    }
+    return {
+      success
+    };
   }
 }

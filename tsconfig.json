@@ -39,7 +39,7 @@
   "include": [
     "src",
     ".eslintrc.js",
-    "test/**/*",
+    "test/**/*", "jest-test/**/*",
   ],
   "exclude": ["node_modules", "dist", "src/database"],
 }
