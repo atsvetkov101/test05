@@ -8,7 +8,9 @@ export class IoC{
   
   private static defaultScope = 'default';
   private static dependencies: Map<string, Map<string, Fn>>;
-
+  // Список логинов пользователей, которые авторизованы для данной игры
+  // Ключ идентификатор и гры
+  private static userLogins: Map<string, string[]>;
   private static storage: any;
 
   public static getDefaultScopeName() {
@@ -17,21 +19,16 @@ export class IoC{
 
   public static setCurrenScope( scope: string ) {
     let logins = [];
-    if(IoC.storage.getStore() && IoC.storage.getStore().hasOwnProperty('userLogins')){
-      logins = IoC.storage.getStore().userLogins;
-    }
     IoC.storage.enterWith({
-      currentScope: scope,
-      userLogins: logins
+      currentScope: scope
     });
   }
 
-  public static setUserLogins( logins: string[] ) {
-    const scope = IoC.storage.getStore().currentScope;
-    IoC.storage.enterWith({
-      currentScope: scope,
-      userLogins: logins
-    });
+  public static setUserLogins(gameId: string, logins: string[] ) {
+    if(!IoC.userLogins) {
+      IoC.userLogins = new Map();
+    }
+    IoC.userLogins.set(gameId, logins);
   }
 
   public static getCurrentScope() {
@@ -43,11 +40,11 @@ export class IoC{
     return currentScope;
   }
 
-  public static getUserLogins() {
-    let logins = [];
-    if(IoC.storage.getStore() && IoC.storage.getStore().hasOwnProperty('userLogins')){
-      logins = IoC.storage.getStore().userLogins;
+  public static getUserLogins(gameId: string) {
+    if(!IoC.userLogins) {
+      IoC.userLogins = new Map();
     }
+    const logins = IoC.userLogins.get(gameId) || [];
     return logins;
   }
 

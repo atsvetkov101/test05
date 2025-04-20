@@ -20,7 +20,7 @@ export class GameProcessingUsecases {
     await (new InitCommand()).execute();
     IoC.setCurrenScope(gameId);
     if(logins.length > 0) {
-      IoC.setUserLogins(logins);
+      IoC.setUserLogins(gameId, logins);
     }
     await IoC.Resolve<ICommand>('IoC.Register', 'FlexibleCommand', (...args) => {
       return new FlexibleCommand(args);
@@ -57,6 +57,9 @@ export class GameProcessingUsecases {
 
   async startNewGameByUser(userLogins: string[]): Promise<string> {
     const gameId = this.generateGameId();
+    if (!userLogins){
+      throw new Error('ошибка валидации. Список userLogins должен быть задан.')
+    }
     await this.startGame(gameId, userLogins);
     return Promise.resolve(gameId);
   }

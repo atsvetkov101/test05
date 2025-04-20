@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import httpContext from 'express-http-context';
 
 const USER_HTTP_CONTEXT = 'user';
+const AVAILABLE_GAME = 'game';
 
 interface IBaseExceptionOptions {
   originalError?: Error;
@@ -67,6 +68,11 @@ export class AuthenticationMiddleware implements NestMiddleware {
 			);
 		}
 		httpContext.set(USER_HTTP_CONTEXT, decodedToken.id);
+    console.log(`Setting httpContext ${USER_HTTP_CONTEXT} ${decodedToken.id}`);
+    if(decodedToken.gameId){
+      httpContext.set(AVAILABLE_GAME, decodedToken.gameId);
+      console.log(`Setting httpContext ${AVAILABLE_GAME} ${decodedToken.gameId}`);
+    }
 		next();
 	}
 }

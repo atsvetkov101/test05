@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, UsePipes } from '@nestjs/common';
 
 import { AppService } from './app.service';
 import { Authentication } from '../../../contracts/authentication';
@@ -7,6 +7,7 @@ import { GameUsecases } from '../game/game.usecases';
 import { AppUsecases } from './app.usecases';
 import { GameProcessingUsecases } from '../game/game-processing.usecases';
 import { Game } from '../../../contracts/game';
+import { CustomHttpValidationPipe } from '../../../validation/custom-http-validation.pipe';
 
 class InterpretCommandRequest{
   idGame: string; 
@@ -15,6 +16,7 @@ class InterpretCommandRequest{
   args: any;
 }
 
+@UsePipes(CustomHttpValidationPipe)
 @Controller('api')
 export class AppController {
 	constructor(
@@ -50,8 +52,10 @@ export class AppController {
     try {
       resp.gameId = await this.gameProcessingUsecases.startNewGameByUser(dto.userLogins);
       resp.success = true;
-    } catch (e) {
+    } catch (e: any) {
       resp.success = false;
+      resp.error = e.message;
+      resp.errorCode = e?.errorCode;
     }
     return Promise.resolve(resp);
   }
@@ -59,12 +63,17 @@ export class AppController {
   @Post('/v1/authorize-in-game')
   @HttpCode(HttpStatus.OK)
   async authorizeInGame(@Body() dto: Game.AuthorizeInGameRequest): Promise<Game.AuthorizeInGameResponse> {
-    const resp = new Game.AuthorizeInGameResponse();
+    let resp = new Game.AuthorizeInGameResponse();
     try {
-      await this.gameUsecases.authorizeInGame(dto.gameId);
-      resp.success = true;
-    } catch (e) {
+      const result = await this.gameUsecases.authorizeInGame(dto.gameId);
+      resp = {
+        ...result,
+        success: true,
+      };
+    } catch (e: any) {
       resp.success = false;
+      resp.error = e.message;
+      resp.errorCode = e?.errorCode;
     }
     return Promise.resolve(resp);
   }

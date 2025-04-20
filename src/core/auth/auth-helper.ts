@@ -10,6 +10,9 @@ export class AuthHelper{
     AuthHelper.users = new Map();
     AuthHelper.users.set('Alex', 'alex$secret_password');
     AuthHelper.users.set('Bob', 'bob$secret_password');
+    AuthHelper.users.set('Alice', 'alice$secret_password');
+    AuthHelper.users.set('John', 'john$secret_password');
+    AuthHelper.users.set('Boris', 'boris$secret_password');
   }
   public static async login(
     login: string,
