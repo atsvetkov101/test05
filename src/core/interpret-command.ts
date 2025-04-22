@@ -18,6 +18,10 @@ export class InterpretCommand extends BaseCommand implements ICommand {
     this.commandArgs = options.commandArgs;
   }
   async execute(): Promise<void> {
+    console.log('in InterpretCommand.execute()');
+    const currentScope = IoC.getCurrentScope();
+    console.log(`InterpretCommand: currentScope:${currentScope}`);
+
     // находим игру
     const game: ProcessingQueueCommand  = IoC.Resolve<ICommand>('ProcessingQueueCommand', { gameName: this.idGame });
     

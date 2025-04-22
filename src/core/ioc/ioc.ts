@@ -8,7 +8,9 @@ export class IoC{
   
   private static defaultScope = 'default';
   private static dependencies: Map<string, Map<string, Fn>>;
-
+  // Список логинов пользователей, которые авторизованы для данной игры
+  // Ключ идентификатор и гры
+  private static userLogins: Map<string, string[]>;
   private static storage: any;
 
   public static getDefaultScopeName() {
@@ -16,13 +18,34 @@ export class IoC{
   }
 
   public static setCurrenScope( scope: string ) {
+    let logins = [];
     IoC.storage.enterWith({
       currentScope: scope
     });
   }
 
+  public static setUserLogins(gameId: string, logins: string[] ) {
+    if(!IoC.userLogins) {
+      IoC.userLogins = new Map();
+    }
+    IoC.userLogins.set(gameId, logins);
+  }
+
   public static getCurrentScope() {
-    return IoC.storage.getStore().currentScope;
+    if(!IoC.storage){
+      return IoC.getDefaultScopeName();
+    }
+    const currentScope = IoC.storage.getStore().currentScope;
+    console.log(`currentScope:${currentScope}`);
+    return currentScope;
+  }
+
+  public static getUserLogins(gameId: string) {
+    if(!IoC.userLogins) {
+      IoC.userLogins = new Map();
+    }
+    const logins = IoC.userLogins.get(gameId) || [];
+    return logins;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function

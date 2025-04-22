@@ -26,8 +26,12 @@
     "start:consumer:production": "node dist/src/entrypoints/consumer/main",
     "start:console:production": "nest start --entryFile src/entrypoints/console/main",
     "pretest": "npm run build",
-    "test": "mocha dist/test/**/*.js --timeout 999999",
+    "test": "mocha dist/test/**/*.js --timeout 60000 --exit",
     "test-jest": "npx jest",
+    "test-jest-debug": "npx jest --watch",
+    "test-jest-api-start-game": "npx jest -- jest-test/api/api-start-game.spec.ts --watch --timeout 999999",
+    "test-jest-api-login-rest": "npx jest -- jest-test/api/api-login-rest.spec.ts --watch --timeout 60000",
+    "test-jest-api-game-rest": "npx jest -- jest-test/api/api-game-rest.spec.ts --watch --timeout 60000",
     "test:backend:unit": "mocha --forbid-only  --timeout 20000 --require ts-node/register --recursive test/ --trace-warnings --exit",
     "pretest:dev": "npm run build",
     "test:dev": "ts-mocha test/**/*.spec.ts -w --watch-files '**/*.ts'",
@@ -36,12 +40,14 @@
   "dependencies": {
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/jwt": "^11.0.0",
     "@nestjs/microservices": "^11.0.12",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/schedule": "^5.0.1",
     "@nestjs/sequelize": "^11.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "express-http-context": "^1.2.4",
     "moment": "^2.30.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
@@ -50,8 +56,10 @@
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
+    "@nestjs/testing": "^11.0.20",
     "@types/chai": "^4.3.4",
     "@types/express": "^4.17.13",
+    "@types/jest": "^29.5.14",
     "@types/mocha": "^10.0.0",
     "@types/node": "18.11.18",
     "@types/sinon": "^10.0.13",
@@ -79,22 +87,5 @@
     "ts-node": "^10.0.0",
     "tsconfig-paths": "4.1.1",
     "typescript": "^4.7.4"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "test",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
   }
 }
