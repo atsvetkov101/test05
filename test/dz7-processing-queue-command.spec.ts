@@ -30,9 +30,9 @@ describe('ProcessingQueueCommand tests', function() {
       });
     });
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    afterEach(() => {
+    afterEach(async () => {
       if(gameProcessing){
-        gameProcessing.dispose();
+        await gameProcessing.dispose();
       }
       sinon.restore();
     }); 

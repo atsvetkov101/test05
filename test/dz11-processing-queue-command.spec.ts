@@ -31,9 +31,9 @@ describe('ProcessingQueueCommand tests', function() {
       });
     });
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    after(() => {
+    after(async () => {
       if(gameProcessing) {
-        gameProcessing.dispose();
+        await gameProcessing.dispose();
       }
       sinon.restore();
     }); 
@@ -74,9 +74,9 @@ describe('ProcessingQueueCommand tests', function() {
       });
     });
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    after(() => {
+    after(async () => {
       if(gameProcessing) {
-        gameProcessing.dispose();
+        await gameProcessing.dispose();
       }
       sinon.restore();
     }); 

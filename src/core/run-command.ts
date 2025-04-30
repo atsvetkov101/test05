@@ -1,11 +1,9 @@
 import { BaseCommand } from './base-command';
 import { ICommand } from './interfaces/icommand';
-import { ITargetQueue } from './state/itarget-queue';
-import { MoveToCommandState } from './state/moveto-command-state';
-import { ProcessingCommandState } from './state/processing-command-state';
+import { RegularCommandState } from './state/regular-command-state';
 import { ProcessingQueueStateCommand } from './threads/processing-queue-state-command';
 
-export class MoveToCommand extends BaseCommand implements ICommand {
+export class RunCommand extends BaseCommand implements ICommand {
   public get stateCommand() {
     return true;
   };
@@ -15,12 +13,10 @@ export class MoveToCommand extends BaseCommand implements ICommand {
     this.gameProcessing = options.gameProcessing;
   }
   async execute(): Promise<void> {
-    this.gameProcessing.setState(new MoveToCommandState({ 
-      sourceCommandsKeeper:this.gameProcessing, 
-      targetHolder: this.gameProcessing }));
+    this.gameProcessing.setState(new RegularCommandState());
     return Promise.resolve();
   }
   getType(): string {
-    return 'MoveToCommand';
+    return 'RunCommand';
   }
 }

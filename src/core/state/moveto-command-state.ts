@@ -14,6 +14,12 @@ export class MoveToCommandState extends ProcessingCommandState {
   }
   async executeCommand(command: ICommand): Promise<void> {
     try{
+      if('stateCommand' in command)  {
+        return command.execute().then(
+          () => console.log(`MoveToCommandState: command executed ${command.getType()}`),
+          (error) => console.log(`MoveToCommandState: command executed ${command.getType()} ${JSON.stringify(error)}`)
+        );
+      }
       if(!this.moveToCommands){
         this.moveToCommands = await this.targetHolder.getTargetQueue();
       }
