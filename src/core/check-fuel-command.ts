@@ -16,7 +16,7 @@ export class CheckFuelCommand extends BaseCommand implements ICommand {
       }
       return Promise.resolve();
     }else{
-      return Promise.reject();
+      return Promise.reject(new CommandException('CheckFuelCommand: No target'));
     }
   }
   getType(): string {

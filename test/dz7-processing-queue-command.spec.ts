@@ -21,6 +21,7 @@ describe('ProcessingQueueCommand tests', function() {
   describe('dz #7 point 5. tests', function() {
     let messages:string[] = [];
     let logged;
+    let gameProcessing;
     beforeEach(() => {
       messages = [];
       sinon.stub(console, 'log').callsFake((message) => {
@@ -29,7 +30,10 @@ describe('ProcessingQueueCommand tests', function() {
       });
     });
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    afterEach(() => {
+    afterEach(async () => {
+      if(gameProcessing){
+        await gameProcessing.dispose();
+      }
       sinon.restore();
     }); 
     it('dz #7 point 5.В цикле получает из потокобезопасной очереди команду и запускает ее.', async function() {
@@ -49,10 +53,11 @@ describe('ProcessingQueueCommand tests', function() {
       commands.push(straightMoveCommand);
       commands.push(burnFuelCommand);
 
-      const gameProcessing = new ProcessingQueueCommand();
+      gameProcessing = new ProcessingQueueCommand();
       gameProcessing.setCommands(commands);
 
       await gameProcessing.execute();
+      await sleep(1000);
       expect(messages[0].includes('CheckFuelCommand')).equals(true);
       expect(messages[1].includes('StraightMoveCommand')).equals(true);
       expect(messages[2].includes('BurnFuelCommand')).equals(true);
@@ -73,6 +78,7 @@ describe('ProcessingQueueCommand tests', function() {
       gameProcessing.setCommands(commands);
 
       await gameProcessing.execute();
+      await sleep(1000);
       expect(messages.find((item) => item.includes('CheckFuelCommand')) !== undefined).equals(true);
       expect(messages.find((item) => item.includes('Error')) !== undefined).equals(true);
       expect(messages.find((item) => item.includes('StraightMoveCommand')) !== undefined).equals(true);

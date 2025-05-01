@@ -13,7 +13,12 @@ export class ExceptionHandlerConfig {
         
     const errorHandler = new Map<string, ExceptionHandlerFunction>();
     errorHandler.set(Error.name, (command, e) => {
-      console.log(`Handling error of name '${e.name}' error: ${e.message}`);
+      let commandType = ''
+      try{
+        commandType = command.getType();
+      }catch(e){}
+      
+      console.log(`${commandType} Handling error of name '${e.name}' error: ${e.message}`);
     });
 
     handlers.set(BASE_COMMAND_TYPE, errorHandler);

@@ -4,6 +4,14 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "test-jest",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "test-jest"],
+      "console":"integratedTerminal",
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "test-jest-api-game-rest",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "test-jest-api-game-rest"],
