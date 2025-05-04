@@ -62,6 +62,9 @@ describe('ProcessingQueueCommand tests', function() {
       const commands = gameProcessing.getCommands();
       gameProcessing.push(new HardStopCommand({commands}));
       await (new ClearCurrentScopeCommand()).execute();
+      if(gameProcessing) {
+        await gameProcessing.dispose();
+      }
     });
     it('InterpretCommand logic test', async function() {
 
