@@ -1,0 +1,2 @@
+Реализовываем на основе команды ProcessingQueueCommand
+
