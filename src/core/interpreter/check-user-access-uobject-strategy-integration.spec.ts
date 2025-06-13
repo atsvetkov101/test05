@@ -21,7 +21,7 @@ import { IObjectStorage } from '../interfaces/iobject-storage';
 import { ApplicationRuntime } from '../application-runtime';
 
 const sleep = (timeout_ms) => new Promise((resolve) => setTimeout(resolve, timeout_ms));
-const gameId = 'tdryrtytry';
+const gameId = 'kjgdsfgdsaf';
 
 let gameProcessing;
 let gameProcessingQueueCommand;
@@ -41,12 +41,12 @@ const initTest  = async () => {
   }).execute();
 
   const objects = [
-    { id:'myobject1', name:'myname1', ownerId:'Alex' },
-    { id:'myobject2', name:'myname2', ownerId:'Alex' },
-    { id:'myobject3', name:'myname3', ownerId:'Alex' },
-    { id:'myobject10', name:'myname10', ownerId:'Bob' },
-    { id:'myobject13', name:'myname13', ownerId:'Bob' },
-    { id:'myobject20', name:'myname20', ownerId:'Alice' }
+    { id:'myobject1', name:'myname1', ownerId:'Alex', gameId },
+    { id:'myobject2', name:'myname2', ownerId:'Alex', gameId },
+    { id:'myobject3', name:'myname3', ownerId:'Alex', gameId },
+    { id:'myobject10', name:'myname10', ownerId:'Bob', gameId },
+    { id:'myobject13', name:'myname13', ownerId:'Bob', gameId },
+    { id:'myobject20', name:'myname20', ownerId:'Alice', gameId }
   ];
 
   gameProcessing = await IoC.Resolve<ICommand>('ProcessingQueueCommand', { gameName: gameId, objects });
@@ -61,7 +61,7 @@ describe('CheckUserAccessUobjectStrategy tests', function() {
       const originalConsoleLog = console.log;
       jest.spyOn(console, 'log').mockImplementation((message) => {
         messages.push(message);
-        originalConsoleLog(message);
+        // originalConsoleLog(message);
       });
     });
     afterAll(async () => {

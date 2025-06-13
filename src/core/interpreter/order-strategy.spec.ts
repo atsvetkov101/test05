@@ -66,7 +66,7 @@ describe('OrderStrategy tests', function() {
       const originalConsoleLog = console.log;
       jest.spyOn(console, 'log').mockImplementation((message) => {
         messages.push(message);
-        originalConsoleLog(message);
+        // originalConsoleLog(message);
       });
     });
     afterAll(async () => {

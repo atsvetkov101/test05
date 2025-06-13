@@ -58,11 +58,11 @@ describe('FindObjectInStorageCommand tests', function() {
       const originalConsoleLog = console.log;
       jest.spyOn(console, 'log').mockImplementation((message) => {
         messages.push(message);
-        originalConsoleLog(message);
+        // originalConsoleLog(message);
       });
     });
     afterEach(async () => {
-      jest.restoreAllMocks();
+     
       const commands = gameProcessing.getCommands();
       gameProcessing.push(new HardStopCommand({commands}));
       await sleep(2000);
@@ -71,6 +71,7 @@ describe('FindObjectInStorageCommand tests', function() {
         await gameProcessing.dispose();
       }
       ApplicationRuntime.setObjectStorage(null);
+      jest.restoreAllMocks();
     });
     it('FindObjectInStorageCommand Игровой объект найден', async function() {
 

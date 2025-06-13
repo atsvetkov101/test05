@@ -2,7 +2,9 @@ import { ICommand } from '../interfaces/icommand';
 import { IObjectStorage } from '../interfaces/iobject-storage';
 import { IoC } from '../ioc/ioc';
 import { ApplicationRuntime } from '../application-runtime';
-
+/**
+2. Необходимо запретить одному игроку отдавать приказы другому игроку.
+ */
 export class CheckUserAccessUobjectStrategy{
   protected objectStorage: IObjectStorage;
   constructor(protected gameId: string, 
