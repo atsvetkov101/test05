@@ -1,23 +1,32 @@
 
-import { IoC } from '../core/ioc/ioc';
+import { IoC } from '../ioc/ioc';
 
-import { InitCommand } from '../core/scopes/init-command';
-import { ClearCurrentScopeCommand } from '../core/scopes/clear-current-scope-command';
-import { ProcessingQueueCommand } from '../core/threads/processing-queue-command';
-import { HardStopCommand } from '../core/hard-stop-command';
+import { GameObject } from '../game-object';
+import { CheckFuelCommand } from '../check-fuel-command';
+import { Point } from '../point';
+import { Vector } from '../vector';
+import { CommandException } from '../command-exception';
+import { InitCommand } from '../scopes/init-command';
+import { ClearCurrentScopeCommand } from '../scopes/clear-current-scope-command';
+import { ManyArgumentsCommand } from '../many-arguments-command';
+import { ProcessingQueueCommand } from '../threads/processing-queue-command';
+import { HardStopCommand } from '../hard-stop-command';
 
-import { ICommand } from '../core/interfaces/icommand';
-import { FlexibleCommand } from '../core/flexible-command';
-import { FindObjectCommand } from '../core/find-object-command';
-import { ApplicationRuntime } from './application-runtime';
-import { FindObjectInStorageCommand } from './find-object-in-storage-command';
+import { ICommand } from '../interfaces/icommand';
+import { FlexibleCommand } from '../flexible-command';
+import { KeepProcessingCommand } from '../keep-processing-command';
+import { FindObjectCommand } from '../find-object-command';
+import { CheckUserAccessUobjectStrategy } from './check-user-access-uobject-strategy';
+import { IObjectStorage } from '../interfaces/iobject-storage';
+import { ApplicationRuntime } from '../application-runtime';
+import { OrderStrategy } from './order-strategy';
+import { FindObjectInStorageCommand } from '../find-object-in-storage-command';
 
 const sleep = (timeout_ms) => new Promise((resolve) => setTimeout(resolve, timeout_ms));
-const gameId = 'tdryrtytry';
+const gameId = 'rtt213213213';
 
 let gameProcessing;
-
-let findObjectInStorageCommand;
+let gameProcessingQueueCommand;
 let initialGameProcessing;
 
 const initTest  = async () => {
@@ -48,23 +57,24 @@ const initTest  = async () => {
   gameProcessing = await IoC.Resolve<ICommand>('ProcessingQueueCommand', { gameName: gameId, objects });
   const commands = gameProcessing.getCommands();
   gameProcessing.execute();
-  ApplicationRuntime.setObjectStorage(gameProcessing);
 }
 
-describe('FindObjectInStorageCommand tests', function() {
-  describe('dz #13 FindObjectInStorageCommand tests', function() {
+describe('OrderStrategy tests', function() {
+  describe('dz #13 OrderStrategy tests', function() {
     let messages:string[] = [];
-    beforeEach(async () => {
+    beforeAll(async () => {
       const originalConsoleLog = console.log;
       jest.spyOn(console, 'log').mockImplementation((message) => {
         messages.push(message);
         originalConsoleLog(message);
       });
     });
-    afterEach(async () => {
+    afterAll(async () => {
       jest.restoreAllMocks();
       const commands = gameProcessing.getCommands();
       gameProcessing.push(new HardStopCommand({commands}));
+      const commands1 = gameProcessingQueueCommand.getCommands();
+      gameProcessingQueueCommand.push(new HardStopCommand({commands1}));
       await sleep(2000);
       await (new ClearCurrentScopeCommand()).execute();
       if(gameProcessing) {
@@ -72,7 +82,7 @@ describe('FindObjectInStorageCommand tests', function() {
       }
       ApplicationRuntime.setObjectStorage(null);
     });
-    it('FindObjectInStorageCommand Игровой объект найден', async function() {
+    it('OrderStrategy', async function() {
 
       await initTest();
 
@@ -81,34 +91,20 @@ describe('FindObjectInStorageCommand tests', function() {
         idObject:'myobject10',
       };
 
-      findObjectInStorageCommand = await IoC.Resolve<ICommand>('FindObjectInStorageCommand', {
-        objectId: message.idObject, 
-        gameId: message.idGame 
-      });
+      const executorUserId = 'Bob';
+      gameProcessingQueueCommand = await IoC.Resolve<ICommand>('ProcessingQueueCommand', { gameName: message.idGame });
+      ApplicationRuntime.setObjectStorage(gameProcessingQueueCommand);
 
-      findObjectInStorageCommand.execute();
-      const uObject = findObjectInStorageCommand.getResult();
-      
-      expect(uObject).not.toEqual(null);
+      const strategy = new OrderStrategy(
+        message.idGame, 
+        message.idObject,
+        'FlexibleCommand',
+        executorUserId,
+        {"initialVelocity": 2}
+        );
+      const result = await strategy.execute();
+      expect(result).toEqual(true);
     });
-    it('FindObjectInStorageCommand Игровой объект не найден', async function() {
-
-      await initTest();
-
-      const message = {
-        idGame: gameId,
-        idObject:'wrondObjectId',
-      };
-
-      findObjectInStorageCommand = await IoC.Resolve<ICommand>('FindObjectInStorageCommand', {
-        objectId: message.idObject, 
-        gameId: message.idGame 
-      });
-
-      findObjectInStorageCommand.execute();
-      const uObject = findObjectInStorageCommand.getResult();
-      
-      expect(uObject).not.toBeDefined();
-    });
+    
   });
 });

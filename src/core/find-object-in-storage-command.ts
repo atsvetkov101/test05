@@ -16,7 +16,7 @@ export class FindObjectInStorageCommand extends BaseCommand implements ICommand 
     const storage = ApplicationRuntime.getObjectStorage();
     const objects = storage.getObjects(this.gameId);
     const uObject = objects.find((item) => item.id === this.objectId);
-    this.uObject = uObject
+    this.uObject = uObject;
     return Promise.resolve();
   }
 
