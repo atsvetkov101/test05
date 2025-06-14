@@ -27,6 +27,9 @@ export class OrderStrategy{
   }
 
   async execute(): Promise<boolean> {
+    if(!this.executorUserId){
+      return Promise.reject(new Error('Пользователь не задан.'));
+    }
     console.log('OrderStrategy.execute()');
 
     const findCommand = IoC.Resolve<ICommand>('FindObjectInStorageCommand', { gameId: this.gameId, objectId: this.objectId });

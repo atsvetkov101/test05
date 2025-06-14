@@ -28,8 +28,13 @@ export class OrderExecutionCommand extends BaseCommand implements ICommand {
     this.strategy = new OrderStrategy(this.gameId, this.uObjectid, this.actionCommandName, this.executorUserId, this.parameters);
   }
   async execute(): Promise<void> {
-    const strategyResult = await this.strategy.execute();
-    return strategyResult ? Promise.resolve() : Promise.reject();
+    let strategyResult;
+    try{
+      strategyResult = await this.strategy.execute();
+    } catch (error) {
+      return Promise.reject(error);
+    }
+    return Promise.resolve();
   }
 
   getType(): string {
