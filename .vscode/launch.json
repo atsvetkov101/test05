@@ -4,6 +4,22 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "test-jest-part-dz13",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "test-jest-part-dz13"],
+      "console":"integratedTerminal",
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "test-jest-single",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "test-jest-single"],
+      "console":"integratedTerminal",
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "test-jest",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "test-jest"],

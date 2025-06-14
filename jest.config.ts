@@ -6,8 +6,8 @@ const config: JestConfigWithTsJest = {
     "json",
     "ts"
   ],
-  "rootDir": "jest-test",
-  "testRegex": ".*\\.spec\\.ts$",
+  "rootDir": '.',
+  "testMatch": ['<rootDir>/jest-test/**/*.spec.ts', '<rootDir>/src/core/**/*.spec.ts'],
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },

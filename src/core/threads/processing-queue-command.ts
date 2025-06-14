@@ -5,28 +5,21 @@ import { ICommand } from '../interfaces/icommand';
 import { IoC } from '../ioc/ioc';
 import appEventProcessorInstance from '../runtime/app-event-processor-instance';
 import { APP_EVENTS } from '../runtime/app-event-processor';
+import { IObjectStorage } from '../interfaces/iobject-storage';
 
 const sleep = (timeout_ms) => new Promise((resolve) => setTimeout(resolve, timeout_ms));
 
-export class ProcessingQueueCommand extends MacroCommand{
+export class ProcessingQueueCommand extends MacroCommand implements IObjectStorage{
 
   protected static games = new Map();
-  private currentGameName: string;
+  protected currentGameName: string;
   private quant: number = 500; // в миллисекундах
   private startGameHandler;
   private disposed: boolean = false;
   constructor(options: any = {}){
     super();
     const gameName = options.gameName || 'default';
-    if (!ProcessingQueueCommand.games.get(gameName)) {
-      const objects = options.objects || new Map();
-      const commands = options.commands || [];
-      ProcessingQueueCommand.games.set(gameName, {
-        gameName,
-        objects,
-        commands,
-      });
-    }
+    this.setGame(gameName, options);
     this.currentGameName = gameName;
     this.startGameHandler = async (data) => {
       
@@ -62,6 +55,19 @@ export class ProcessingQueueCommand extends MacroCommand{
     };
     appEventProcessorInstance.on(APP_EVENTS.START_GAME, this.startGameHandler);
   }
+
+  setGame(gameName: string, options: any){
+    if (!ProcessingQueueCommand.games.get(gameName)) {
+      const objects = options.objects || new Map();
+      const commands = options.commands || [];
+      ProcessingQueueCommand.games.set(gameName, {
+        gameName,
+        objects,
+        commands,
+      });
+    }
+  }
+
   async executeCommand(command: ICommand): Promise<void>{
     return command.execute();
   }
@@ -103,7 +109,8 @@ export class ProcessingQueueCommand extends MacroCommand{
     ProcessingQueueCommand.games.get(this.currentGameName).commands = [];
   }
   
-  public getObjects(){
-    return ProcessingQueueCommand.games.get(this.currentGameName).objects;
-  } 
+  public getObjects(gameName = null): any[]{
+    const selectedGameName = gameName || this.currentGameName;
+    return ProcessingQueueCommand.games.get(selectedGameName).objects;
+  }
 }
